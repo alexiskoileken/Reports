@@ -9,13 +9,18 @@ pageextension 50100 "Accountat ext" extends "Accountant Role Center"
     }
     actions
     {
-        addafter(History)
+        addbefore("G/L Reports")
         {
-            action(MyReport)
+            group("Bank reports")
             {
-                ApplicationArea = basic, suite;
-                Caption = 'Testing onInit';
-                RunObject = report ttriggerstest;
+                Caption = 'Bank Reports';
+                action("Bank Report List")
+                {
+                    ApplicationArea = basic, suite;
+                    Caption = 'Bank Account list';
+                    RunObject = report "Bank Account list";
+                    Image = Report;
+                }
             }
         }
     }
