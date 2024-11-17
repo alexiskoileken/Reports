@@ -18,7 +18,7 @@ pageextension 50101 "Customer ext" extends "Customer Card"
                 var
                     myInt: Integer;
                 begin
-                    GetUserInformation();
+                    ApiConnect(10);
                 end;
 
             }
@@ -34,7 +34,8 @@ pageextension 50101 "Customer ext" extends "Customer Card"
                     ConfirmMsg: Label 'Do you want to download?';
                     ConfirmElseMsg: Label 'No problem';
                 begin
-                    ConvertJsonTxt();
+                    if Confirm(ConfirmMsg) then
+                        CustomerDataJson(Rec);
                 end;
             }
         }
@@ -72,11 +73,17 @@ pageextension 50101 "Customer ext" extends "Customer Card"
         Message(ResponseString);
     end;
     //customer
-    local procedure CustomerDataJson(Cust: Record Customer) CustObj: JsonObject
+    local procedure CustomerDataJson(Cust: Record Customer)
     var
+        CustObj: JsonObject;
         CustLedgEntryArr: JsonArray;
         CustLedgEntry: Record "Cust. Ledger Entry";
         CustLedgEntryObj: JsonObject;
+        TempBlob: Codeunit "Temp Blob";
+        OuStr: OutStream;
+        InsStr: InStream;
+        Result: Text;
+        ToFileName: Text;
     begin
         Clear(CustObj);
         CustObj.Add('CustomerNo', cust."No.");
@@ -94,16 +101,29 @@ pageextension 50101 "Customer ext" extends "Customer Card"
                 CustLedgEntryObj.Add('Amount', CustLedgEntry.Amount);
                 CustLedgEntryArr.Add(CustLedgEntryObj);
             until CustLedgEntry.Next() = 0;
-        CustObj.Add('LedgerEntries', CustLedgEntryArr)
+        CustObj.Add('LedgerEntries', CustLedgEntryArr);
+        TempBlob.CreateOutStream(OuStr);
+        TempBlob.CreateInStream(InsStr);
+        CustObj.WriteTo(OuStr);
+        OuStr.WriteText(Result);
+        InsStr.ReadText(Result);
+        ToFileName := 'Customer.Json';
+        DownloadFromStream(InsStr, 'Download json file', '', 'All Files(*.*)|*.*', ToFileName)
+
     end;
 
-    local procedure ConvertJsonTxt()
+
+
+    local procedure ApiConnect(UserId: Integer)
     var
-        CustObj: JsonObject;
-        Result: text;
+        Client: HttpClient;
+        Response: HttpResponseMessage;
+        Content: HttpContent;
+        Result: Text;
     begin
-        CustObj := CustomerDataJson(rec);
-        CustObj.WriteTo(Result);
+        Client.Get('https://jsonplaceholder.typicode.com/posts', Response);
+        if Response.IsSuccessStatusCode then
+            Response.Content().ReadAs(Result);
         Message(Result);
     end;
 
