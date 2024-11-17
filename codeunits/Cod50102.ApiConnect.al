@@ -3,6 +3,10 @@
 /// </summary>
 codeunit 50102 ApiConnect
 {
+    /// <summary>
+    /// UserApiConnect.
+    /// </summary>
+    /// <param name="ApiConnect">Record ApiConnect.</param>
     procedure UserApiConnect(ApiConnect: Record ApiConnect)
     var
         Client: HttpClient;
@@ -22,6 +26,7 @@ codeunit 50102 ApiConnect
             ApiConnect.Name := JToken.AsValue().AsText();
             UserJobjct.Get('username', JToken);
             ApiConnect.UserName := JToken.AsValue().AsText();
+            UserJobjct.Get('adress',JToken)
         end;
     end;
 }

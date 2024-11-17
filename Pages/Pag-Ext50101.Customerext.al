@@ -35,7 +35,9 @@ pageextension 50101 "Customer ext" extends "Customer Card"
                     ConfirmElseMsg: Label 'No problem';
                 begin
                     if Confirm(ConfirmMsg) then
-                        CustomerDataJson(Rec);
+                        CustomerDataJson(Rec)
+                    else
+                        Message(ConfirmElseMsg);
                 end;
             }
         }
@@ -76,40 +78,52 @@ pageextension 50101 "Customer ext" extends "Customer Card"
     local procedure CustomerDataJson(Cust: Record Customer)
     var
         CustObj: JsonObject;
-        CustLedgEntryArr: JsonArray;
         CustLedgEntry: Record "Cust. Ledger Entry";
-        CustLedgEntryObj: JsonObject;
+        CustObjArr: JsonArray;
+        LdgerEntr: JsonObject;
         TempBlob: Codeunit "Temp Blob";
-        OuStr: OutStream;
-        InsStr: InStream;
+        OutStr: OutStream;
+        InStr: InStream;
         Result: Text;
         ToFileName: Text;
+        LocationObj: JsonObject;
+        LocationArr: JsonArray;
+
     begin
         Clear(CustObj);
-        CustObj.Add('CustomerNo', cust."No.");
+        CustObj.Add('CustomerNo', Cust."No.");
         CustObj.Add('CustomerName', Cust.Name);
+        CustObj.Add('Email', cust."E-Mail");
+        CustObj.Add('SecondName', Cust."Search Name");
 
         CustLedgEntry.Reset();
-        CustLedgEntry.SetRange("Customer No.", Cust."No.");
+        CustLedgEntry.SetRange("Customer No.", cust."No.");
         if CustLedgEntry.FindSet() then
             repeat
-                Clear(CustLedgEntryObj);
+                Clear(LdgerEntr);
                 CustLedgEntry.CalcFields(Amount);
-                CustLedgEntryObj.Add('DocumentNo', CustLedgEntry."Document No.");
-                CustLedgEntryObj.Add('PostingDate', CustLedgEntry."Posting Date");
-                CustLedgEntryObj.Add('Description', CustLedgEntry.Description);
-                CustLedgEntryObj.Add('Amount', CustLedgEntry.Amount);
-                CustLedgEntryArr.Add(CustLedgEntryObj);
+                LdgerEntr.Add('DocumentNo', CustLedgEntry."Document No.");
+                LdgerEntr.Add('PostingDate', CustLedgEntry."Posting Date");
+                LdgerEntr.Add('Description', CustLedgEntry.Description);
+                LdgerEntr.Add('Amount', CustLedgEntry.Amount);
+                CustObjArr.Add(LdgerEntr);
             until CustLedgEntry.Next() = 0;
-        CustObj.Add('LedgerEntries', CustLedgEntryArr);
-        TempBlob.CreateOutStream(OuStr);
-        TempBlob.CreateInStream(InsStr);
-        CustObj.WriteTo(OuStr);
-        OuStr.WriteText(Result);
-        InsStr.ReadText(Result);
-        ToFileName := 'Customer.Json';
-        DownloadFromStream(InsStr, 'Download json file', '', 'All Files(*.*)|*.*', ToFileName)
-
+        CustObj.Add('LedgerEntries', CustObjArr);
+        Clear(LocationObj);
+        LocationObj.Add('Adress', Cust.Address);
+        LocationObj.Add('Adress2', cust."Address 2");
+        LocationObj.Add('City', Cust.City);
+        LocationObj.Add('Country', Cust."Country/Region Code");
+        LocationArr.Add(LocationObj);
+        CustObj.Add('Location', LocationArr);
+        // download 
+        TempBlob.CreateOutStream(OutStr);
+        TempBlob.CreateInStream(InStr);
+        CustObj.WriteTo(OutStr);
+        OutStr.WriteText(Result);
+        InStr.ReadText(Result);
+        ToFileName := 'CustomerData';
+        DownloadFromStream(InStr, 'Download json file', '', 'All Files(*.*)|*.*', ToFileName)
     end;
 
 
