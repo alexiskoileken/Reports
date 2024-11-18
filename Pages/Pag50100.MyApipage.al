@@ -9,8 +9,8 @@ page 50100 MyApipage
     ApplicationArea = All;
     Caption = 'myApipage';
     DelayedInsert = true;
-    EntityName = 'Customer';
-    EntitySetName = 'Customers';
+    EntityName = 'Customers';
+    EntitySetName = 'Customer';
     PageType = API;
     SourceTable = Customer;
     ODataKeyFields = SystemId;
