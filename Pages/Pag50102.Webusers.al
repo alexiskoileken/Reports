@@ -34,6 +34,18 @@ page 50102 "Web users"
             {
                 Caption = 'Email';
             }
+            field(Street; Street)
+            {
+                Caption = 'Street';
+            }
+            field(Suite; Suite)
+            {
+                Caption = 'Suite';
+            }
+            field(city; city)
+            {
+                Caption = 'City';
+            }
         }
     }
     local procedure GetApiWeb()
@@ -43,6 +55,10 @@ page 50102 "Web users"
         Result: Text;
         UserJson: JsonObject;
         JsonToken: JsonToken;
+        JOutput: Text;
+        AdrssJObjct: JsonObject;
+        AdrssJtkn: JsonToken;
+        Request: HttpRequestMessage;
     begin
         if not client.Get('https://jsonplaceholder.typicode.com/users/' + Format(Id), Response) then
             Error('No Api of type retreived');
@@ -55,6 +71,19 @@ page 50102 "Web users"
         UserName := JsonToken.AsValue().AsText();
         UserJson.Get('email', JsonToken);
         Email := JsonToken.AsValue().AsText();
+        UserJson.Get('address', JsonToken);
+        if JsonToken.IsObject then begin
+            JsonToken.WriteTo(JOutput);
+            AdrssJObjct.ReadFrom(JOutput);
+            AdrssJObjct.Get('street', AdrssJtkn);
+            Street := AdrssJtkn.AsValue().AsText();
+            AdrssJObjct.Get('suite', AdrssJtkn);
+            Suite := AdrssJtkn.AsValue().AsText();
+            AdrssJObjct.Get('city', AdrssJtkn);
+            city := AdrssJtkn.AsValue().AsText();
+
+        end;
+
     end;
 
     var
@@ -62,4 +91,7 @@ page 50102 "Web users"
         Name: Text;
         UserName: Text;
         Email: Text;
+        Street: Text;
+        Suite: Text;
+        city: text;
 }

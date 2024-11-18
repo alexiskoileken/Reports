@@ -4,29 +4,26 @@
 codeunit 50102 ApiConnect
 {
     /// <summary>
-    /// UserApiConnect.
+    /// ApiConnectVal.
     /// </summary>
     /// <param name="ApiConnect">Record ApiConnect.</param>
-    procedure UserApiConnect(ApiConnect: Record ApiConnect)
+    procedure ApiConnectVal(var ApiConnect: Record ApiConnect)
     var
         Client: HttpClient;
         Response: HttpResponseMessage;
-        Content: HttpContent;
-        Result: Text;
-        UserJobjct: JsonObject;
-        JToken: JsonToken;
-
+        OutPut: Text;
+        JsonObj: JsonObject;
+        JTkn: JsonToken;
     begin
-        Client.Get('https://jsonplaceholder.typicode.com/users/' + Format(ApiConnect.UserId), Response);
+        if not Client.Get('https://jsonplaceholder.typicode.com/users/' + Format(ApiConnect.UserId), Response) then
+            Error('No API of This type present');
         if Response.IsSuccessStatusCode then begin
-            Content := Response.Content;
-            Content.ReadAs(Result);
-            UserJobjct.ReadFrom(Result);
-            UserJobjct.Get('name', JToken);
-            ApiConnect.Name := JToken.AsValue().AsText();
-            UserJobjct.Get('username', JToken);
-            ApiConnect.UserName := JToken.AsValue().AsText();
-            UserJobjct.Get('adress',JToken)
+            Response.Content().ReadAs(Output);
+            JsonObj.ReadFrom(OutPut);
+            JsonObj.Get('name', JTkn);
+            ApiConnect.Name := JTkn.AsValue().AsText();
+
         end;
+
     end;
 }

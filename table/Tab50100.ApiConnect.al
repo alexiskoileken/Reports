@@ -15,7 +15,7 @@ table 50100 ApiConnect
             var
                 ApiConnect: Codeunit ApiConnect;
             begin
-                ApiConnect.UserApiConnect(Rec);
+                ApiConnect.ApiConnectVal(Rec);
             end;
         }
         field(2; Name; Text[50])
@@ -25,6 +25,54 @@ table 50100 ApiConnect
         field(3; UserName; Text[50])
         {
             Caption = 'UserName';
+        }
+        field(4; email; Text[50])
+        {
+            Caption = 'email';
+        }
+        field(5; Street; Text[50])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(6; suite; Text[50])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(7; city; Text[50])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(8; ZipCode; Code[50])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(9; Lat; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(10; Long; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(11; Phone; Code[50])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(12; website; Text[50])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(13; CName; Text[50])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(14; CatchPhrase; Code[100])
+        {
+
+        }
+        field(15; Bs; Code[100])
+        {
+            DataClassification = ToBeClassified;
         }
     }
     keys
