@@ -22,6 +22,10 @@ page 50100 MyApipage
         {
             repeater(GroupName)
             {
+                field(SystemId; Rec.SystemId)
+                {
+                    Caption = 'System Id';
+                }
                 field(no; Rec."No.")
                 {
                     Caption = 'No.';

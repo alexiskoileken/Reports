@@ -8,6 +8,7 @@ page 50101 "Apiconnect list"
     PageType = List;
     SourceTable = ApiConnect;
     UsageCategory = Lists;
+    CardPageId = "Api connect card";
 
     layout
     {
@@ -26,6 +27,10 @@ page 50101 "Apiconnect list"
                 field(UserName; Rec.UserName)
                 {
                     ToolTip = 'Specifies the value of the UserName field.', Comment = '%';
+                }
+                field(email; Rec.email)
+                {
+
                 }
             }
         }
