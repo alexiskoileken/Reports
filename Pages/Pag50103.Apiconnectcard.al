@@ -4,7 +4,7 @@ page 50103 "Api connect card"
     Caption = 'Api connect card';
     PageType = Card;
     SourceTable = ApiConnect;
-    
+
     layout
     {
         area(Content)
@@ -12,7 +12,7 @@ page 50103 "Api connect card"
             group(General)
             {
                 Caption = 'General';
-                
+
                 field(UserId; Rec.UserId)
                 {
                     ToolTip = 'Specifies the value of the UserId field.', Comment = '%';
@@ -41,7 +41,7 @@ page 50103 "Api connect card"
             group(address)
             {
                 Caption = 'address';
-                
+
                 field(Street; Rec.Street)
                 {
                     ToolTip = 'Specifies the value of the Street field.', Comment = '%';
@@ -62,7 +62,7 @@ page 50103 "Api connect card"
             group(geograhy)
             {
                 Caption = 'geograhy';
-                
+
                 field(Lat; Rec.Lat)
                 {
                     ToolTip = 'Specifies the value of the Lat field.', Comment = '%';
@@ -75,7 +75,7 @@ page 50103 "Api connect card"
             group(company)
             {
                 Caption = 'company';
-                
+
                 field(CName; Rec.CName)
                 {
                     ToolTip = 'Specifies the value of the CName field.', Comment = '%';
@@ -88,6 +88,14 @@ page 50103 "Api connect card"
                 {
                     ToolTip = 'Specifies the value of the Bs field.', Comment = '%';
                 }
+            }
+        }
+        area(FactBoxes)
+        {
+            part(control1; "Api Connect image")
+            {
+                ApplicationArea = all;
+                SubPageLink = UserId = field(UserId);
             }
         }
     }

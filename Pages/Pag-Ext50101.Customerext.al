@@ -40,6 +40,7 @@ pageextension 50101 "Customer ext" extends "Customer Card"
                         Message(ConfirmElseMsg);
                 end;
             }
+
         }
     }
     local procedure Mtest()
@@ -75,9 +76,9 @@ pageextension 50101 "Customer ext" extends "Customer Card"
         Message(ResponseString);
     end;
     //customer
-    local procedure CustomerDataJson(Cust: Record Customer)
+    local procedure CustomerDataJson(Cust: Record Customer) CustObj: JsonObject;
     var
-        CustObj: JsonObject;
+
         CustLedgEntry: Record "Cust. Ledger Entry";
         CustObjArr: JsonArray;
         LdgerEntr: JsonObject;
@@ -116,14 +117,7 @@ pageextension 50101 "Customer ext" extends "Customer Card"
         LocationObj.Add('Country', Cust."Country/Region Code");
         LocationArr.Add(LocationObj);
         CustObj.Add('Location', LocationArr);
-        // download 
-        TempBlob.CreateOutStream(OutStr);
-        TempBlob.CreateInStream(InStr);
-        CustObj.WriteTo(OutStr);
-        OutStr.WriteText(Result);
-        InStr.ReadText(Result);
-        ToFileName := 'CustomerData';
-        DownloadFromStream(InStr, 'Download json file', '', 'All Files(*.*)|*.*', ToFileName)
+        exit(CustObj)
     end;
 
 

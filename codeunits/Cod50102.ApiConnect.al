@@ -45,8 +45,7 @@ codeunit 50102 ApiConnect
             ApiConnect.suite := adrssjsotkn.AsValue().AsText();
 
         end;
-
-
-
     end;
+    var
+    v: Codeunit Regex;
 }

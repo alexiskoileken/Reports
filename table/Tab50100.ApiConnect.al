@@ -74,6 +74,21 @@ table 50100 ApiConnect
         {
             DataClassification = ToBeClassified;
         }
+        field(20; Image; Media)
+        {
+
+        }
+        field(19; Indentation; Integer)
+        {
+            Caption = 'Indentation';
+            MinValue = 0;
+
+            trigger OnValidate()
+            begin
+                if Indentation < 0 then
+                    Indentation := 0;
+            end;
+        }
     }
     keys
     {

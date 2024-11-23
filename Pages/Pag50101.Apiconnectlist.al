@@ -16,6 +16,9 @@ page 50101 "Apiconnect list"
         {
             repeater(General)
             {
+                IndentationColumn = NameIndent;
+                IndentationControls = Name;
+                ShowCaption = false;
                 field(UserId; Rec.UserId)
                 {
                     ToolTip = 'Specifies the value of the UserId field.', Comment = '%';
@@ -35,4 +38,15 @@ page 50101 "Apiconnect list"
             }
         }
     }
+    trigger OnAfterGetRecord()
+    var
+        myInt: Integer;
+    begin
+        NameIndent := rec.Indentation;
+    end;
+
+    var
+        [InDataSet]
+        NameIndent: Integer;
+
 }
