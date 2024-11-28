@@ -38,6 +38,27 @@ page 50101 "Apiconnect list"
             }
         }
     }
+    actions
+    {
+        area(Processing)
+        {
+            action(TesReport)
+            {
+                ApplicationArea = All;
+                Caption = 'Test';
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                Image = Report;
+                trigger OnAction()
+                var
+                    myInt: Integer;
+                begin
+                    Report.Run(Report::BarcodeRep);
+                end;
+            }
+        }
+    }
     trigger OnAfterGetRecord()
     var
         myInt: Integer;

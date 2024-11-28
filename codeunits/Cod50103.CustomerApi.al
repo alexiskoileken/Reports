@@ -7,55 +7,90 @@ codeunit 50103 "Customer Api "
     /// CustomerXml.
     /// </summary>
     /// <returns>Return variable CustXml of type XmlDocument.</returns>
-    [ServiceEnabled]
-    procedure CustomerXml() CustXml: XmlDocument
+
+    procedure CustomerXml(var Cust: Record Customer)
     var
-
+        XmlDoc: XmlDocument;
+        xmlDec: XmlDeclaration;
+        RouteNode: XmlElement;
         ParentNode: XmlElement;
-        routeNode: XmlElement;
-        XmlDec: XmlDeclaration;
-        cust: Record Customer;
-        fieldCaption: Text;
         ChildNode: XmlElement;
-        TxtValue: XmlText;
-        Result: Text;
-
+        FieldCap: Text;
+        CustomerData: XmlText;
+        XmlDocOut: OutStream;
+        XmlDocInst: InStream;
+        TempBlob: Codeunit "Temp Blob";
+        ToFile: Text;
+        CustLedgEntry: Record "Cust. Ledger Entry";
     begin
-        CustXml := XmlDocument.Create();
-        XmlDec := XmlDeclaration.Create('V1.0', 'utf-8', '');
-        CustXml.SetDeclaration(XmlDec);
-        routeNode := XmlElement.Create('Table');
-        CustXml.Add(routeNode);
-        if cust.FindSet() then
+        XmlDoc := XmlDocument.Create();
+        xmlDec := XmlDeclaration.Create('1.0', 'utf-8', '');
+        XmlDoc.SetDeclaration(xmlDec);
+        RouteNode := XmlElement.Create('Table');
+        XmlDoc.Add(RouteNode);
+        if Cust.FindFirst() then
             repeat
                 ParentNode := XmlElement.Create('Customer');
-                routeNode.Add(ParentNode);
-                fieldCaption := cust.FieldCaption("No.");
-                ChildNode := XmlElement.Create(fieldCaption);
-                TxtValue := XmlText.Create(cust."No.");
-                ChildNode.Add(TxtValue);
+                RouteNode.Add(ParentNode);
+                FieldCap := Cust.FieldCaption("No.");
+                ChildNode := XmlElement.Create(FieldCap);
+                CustomerData := XmlText.Create(Cust."No.");
+                ChildNode.Add(CustomerData);
                 ParentNode.Add(ChildNode);
 
-                fieldCaption := cust.FieldCaption(Name);
-                ChildNode := XmlElement.Create(fieldCaption);
-                TxtValue := XmlText.Create(cust.Name);
-                ChildNode.Add(TxtValue);
+                FieldCap := Cust.FieldCaption(Name);
+                ChildNode := XmlElement.Create(FieldCap);
+                CustomerData := XmlText.Create(Cust.Name);
+                ChildNode.Add(CustomerData);
                 ParentNode.Add(ChildNode);
 
-                fieldCaption := cust.FieldCaption(Contact);
-                ChildNode := XmlElement.Create(fieldCaption);
-                TxtValue := XmlText.Create(cust.Contact);
-                ChildNode.Add(TxtValue);
+                FieldCap := Cust.FieldCaption(Contact);
+                ChildNode := XmlElement.Create(FieldCap);
+                CustomerData := XmlText.Create(Cust.Contact);
+                ChildNode.Add(CustomerData);
                 ParentNode.Add(ChildNode);
 
-                cust.CalcFields(Balance);
-                fieldCaption := cust.FieldCaption(Balance);
-                ChildNode := XmlElement.Create(fieldCaption);
-                TxtValue := XmlText.Create(Format(cust.Balance));
-                ChildNode.Add(TxtValue);
-                ParentNode.Add(ChildNode);
-            until cust.Next() = 0;
 
-        exit(CustXml)
+                FieldCap := Cust.FieldCaption(Balance);
+                ChildNode := XmlElement.Create(FieldCap);
+                CustomerData := XmlText.Create(Format(Cust.CalcFields(Balance)));
+                ChildNode.Add(CustomerData);
+                ParentNode.Add(ChildNode);
+
+            until Cust.Next() = 0;
+        CustLedgEntry.Reset();
+        CustLedgEntry.SetRange("Customer No.", Cust."No.");
+        if CustLedgEntry.FindSet() then
+            repeat
+                FieldCap := CustLedgEntry.FieldCaption("Posting Date");
+                ChildNode.Add(FieldCap);
+                CustomerData := XmlText.Create(Format(CustLedgEntry."Posting Date"));
+                ChildNode.Add(CustomerData);
+                ParentNode.Add(ChildNode);
+
+                FieldCap := CustLedgEntry.FieldCaption("Document No.");
+                ChildNode.Add(FieldCap);
+                CustomerData := XmlText.Create(Format(CustLedgEntry."Document No."));
+                ChildNode.Add(CustomerData);
+                ParentNode.Add(ChildNode);
+
+                FieldCap := CustLedgEntry.FieldCaption("Document Type");
+                ChildNode.Add(FieldCap);
+                CustomerData := XmlText.Create(Format(CustLedgEntry."Document Type"));
+                ChildNode.Add(CustomerData);
+                ParentNode.Add(ChildNode)
+            until CustLedgEntry.Next() = 0;
+        TempBlob.CreateOutStream(XmlDocOut);
+        XmlDoc.WriteTo(XmlDocOut);
+        ToFile := 'customer.xml';
+        TempBlob.CreateInStream(XmlDocInst);
+        DownloadFromStream(XmlDocInst, 'Dowload xml file', '', 'All Files(*.*)|*.*', ToFile)
     end;
+
+    var
+        v: Record "Tenant Media" temporary;
+        ABSCntrClient: Codeunit "ABS Container Client";
+        FileRec: File;
+
+
 }

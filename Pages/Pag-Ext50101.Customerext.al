@@ -16,9 +16,9 @@ pageextension 50101 "Customer ext" extends "Customer Card"
                 Caption = 'Client';
                 trigger OnAction()
                 var
-                    myInt: Integer;
+                    XmlDocTest: Codeunit XmlDocTest;
                 begin
-                    ApiConnect(10);
+                    XmlDocTest.XmlDoc();
                 end;
 
             }
@@ -33,11 +33,9 @@ pageextension 50101 "Customer ext" extends "Customer Card"
                 var
                     ConfirmMsg: Label 'Do you want to download?';
                     ConfirmElseMsg: Label 'No problem';
+                    XmlDocTest: Codeunit XmlDocTest;
                 begin
-                    if Confirm(ConfirmMsg) then
-                        CustomerDataJson(Rec)
-                    else
-                        Message(ConfirmElseMsg);
+                    XmlDocTest.jsonObjCreate(Rec);
                 end;
             }
 
@@ -135,6 +133,16 @@ pageextension 50101 "Customer ext" extends "Customer Card"
         Message(Result);
     end;
 
-
+    var
+    trigger OnOpenPage()
+    var
+        NotInform: Notification;
+        customer: record customer;
+        XmlDocTest: Codeunit XmlDocTest;
+    begin
+        NotInform.Message(StrSubstNo('The json format of customer %1 is available', customer."No."));
+        // NotInform.AddAction('Download', Codeunit::XmlDocTest, 'jsonObjCreate');
+        NotInform.Send();
+    end;
 }
 

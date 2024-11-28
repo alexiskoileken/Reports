@@ -83,6 +83,7 @@ page 50102 "Web users"
             city := AdrssJtkn.AsValue().AsText();
 
         end;
+    
 
     end;
 

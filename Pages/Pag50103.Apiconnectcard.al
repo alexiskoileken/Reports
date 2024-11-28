@@ -98,5 +98,22 @@ page 50103 "Api connect card"
                 SubPageLink = UserId = field(UserId);
             }
         }
+
+    }
+    actions
+    {
+        area(Processing)
+        {
+            action(TesReport)
+            {
+                ApplicationArea = All;
+                Caption = 'Test';
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                Image = Report;
+                RunObject = report BarcodeRep;
+            }
+        }
     }
 }

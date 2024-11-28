@@ -1,0 +1,5 @@
+{
+    "aloutline.completionproviders":[
+        "VariablesNamesWithType","VariablesNames","VariableDataType"
+    ]
+}
