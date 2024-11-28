@@ -137,12 +137,29 @@ pageextension 50101 "Customer ext" extends "Customer Card"
     trigger OnOpenPage()
     var
         NotInform: Notification;
-        customer: record customer;
-        XmlDocTest: Codeunit XmlDocTest;
+        IsCustomer: Boolean;
+
     begin
-        NotInform.Message(StrSubstNo('The json format of customer %1 is available', customer."No."));
-        // NotInform.AddAction('Download', Codeunit::XmlDocTest, 'jsonObjCreate');
-        NotInform.Send();
+        IsCustomer := LedgerEntry(Rec);
+        if IsCustomer then begin
+            NotInform.Message('Customer has transaction. Do you want to view?');
+            NotInform.AddAction('Cust ledger entries', Codeunit::Notification, 'CustomerLedgerEnties');
+            NotInform.SetData('CustNo', Rec."No.");
+            NotInform.Send()
+        end
+    end;
+
+    local procedure LedgerEntry(Customer: Record Customer): Boolean
+    var
+        CustLedgEntry: Record "Cust. Ledger Entry";
+    begin
+        CustLedgEntry.SetRange("Customer No.", Customer."No.");
+        CustLedgEntry.SetFilter(Amount, '>0');
+        CustLedgEntry.CalcFields(Amount);
+        if CustLedgEntry.FindFirst() then
+            exit(true)
+        else
+            exit(false)
     end;
 }
 

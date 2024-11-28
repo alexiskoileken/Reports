@@ -29,6 +29,18 @@ table 50100 ApiConnect
         field(4; email; Text[50])
         {
             Caption = 'email';
+            trigger OnValidate()
+            var
+                Regex: Codeunit Regex;
+                IsHandled: Boolean;
+                Pattern: Text;
+                InvalidErrorMsg: Label 'The email entered is invalid';
+            begin
+                Pattern := '^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
+                IsHandled := Regex.IsMatch(email, Pattern);
+                if not IsHandled then
+                    Error(InvalidErrorMsg);
+            end;
         }
         field(5; Street; Text[50])
         {
