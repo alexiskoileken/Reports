@@ -3,28 +3,43 @@
 /// </summary>
 codeunit 50106 "Update Customer"
 {
+    TableNo = "Job Queue Entry";
     trigger OnRun()
     var
         myInt: Integer;
     begin
-        CustomerNameUpdate();
+        case Rec."Parameter String" of
+            'Customer':
+                CustomerNameUpdate();
+            'Vendor':
+                VendorNameUpdate();
+        end;
     end;
 
     local procedure CustomerNameUpdate()
     var
         Customer: Record Customer;
-        v: Record ApiConnect;
-
     begin
         Customer.SetCurrentKey(Balance);
         Customer.Ascending(false);
-        if Customer.FindFirst() then
-            if Customer."Customer State" = '' then begin
-                Customer."Customer State" := 'Biggest sales';
+        if Customer.FindLast() then
+            if Customer."Name 2" = '' then begin
+                Customer."Name 2" := 'Least sales';
                 Customer.Modify(true)
             end;
+    end;
 
-
+    local procedure VendorNameUpdate()
+    var
+        Vendor: Record Vendor;
+    begin
+        Vendor.SetCurrentKey(Balance);
+        Vendor.Ascending(false);
+        if Vendor.FindFirst() then
+            if Vendor."Name 2" = '' then begin
+                Vendor."Name 2" := 'Biggest sales';
+                Vendor.Modify(true)
+            end;
     end;
 
     local procedure MyProcedure()
