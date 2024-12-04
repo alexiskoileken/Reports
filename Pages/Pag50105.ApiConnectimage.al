@@ -4,6 +4,7 @@ page 50105 "Api Connect image"
     Caption = 'Api Connect image';
     PageType = CardPart;
     SourceTable = ApiConnect;
+    
 
     layout
     {

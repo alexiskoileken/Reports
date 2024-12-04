@@ -38,6 +38,22 @@ pageextension 50101 "Customer ext" extends "Customer Card"
                     XmlDocTest.jsonObjCreate(Rec);
                 end;
             }
+            action(Excel)
+            {
+                ApplicationArea = All;
+                Caption = 'Excel file', comment = 'NLB="YourLanguageCaption"';
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                Image = Excel;
+
+                trigger OnAction()
+                var
+                    UpdCust: Codeunit "Update Customer";
+                begin
+                    UpdCust.Base64Convert();
+                end;
+            }
 
         }
     }

@@ -31,15 +31,9 @@ table 50100 ApiConnect
             Caption = 'email';
             trigger OnValidate()
             var
-                Regex: Codeunit Regex;
-                IsHandled: Boolean;
-                Pattern: Text;
-                InvalidErrorMsg: Label 'The email entered is invalid';
+                Notif: Codeunit Notification;
             begin
-                Pattern := '^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
-                IsHandled := Regex.IsMatch(email, Pattern);
-                if not IsHandled then
-                    Error(InvalidErrorMsg);
+                Notif.OnValidateEmailAddress(Rec.email);
             end;
         }
         field(5; Street; Text[50])
@@ -66,9 +60,15 @@ table 50100 ApiConnect
         {
             DataClassification = ToBeClassified;
         }
-        field(11; Phone; Code[50])
+        field(11; Phone; Code[13])
         {
             DataClassification = ToBeClassified;
+            trigger OnValidate()
+            var
+                Notif: Codeunit Notification;
+            begin
+                Notif.OnPhoneNumberValidate(Rec.Phone);
+            end;
         }
         field(12; website; Text[50])
         {
@@ -101,6 +101,11 @@ table 50100 ApiConnect
                     Indentation := 0;
             end;
         }
+        field(21; status; Option)
+        {
+            DataClassification = ToBeClassified;
+            OptionMembers = ,open,pending,closed;
+        }
     }
     keys
     {
@@ -109,4 +114,19 @@ table 50100 ApiConnect
             Clustered = true;
         }
     }
+}
+pagecustomization MyCustomization customizes "Customer Card"
+{
+    layout
+    {
+
+        // Add changes to page layout here
+    }
+
+    actions
+    {
+        // Add changes to page actions here
+    }
+
+    //Variables, procedures and triggers are not allowed on Page Customizations
 }
