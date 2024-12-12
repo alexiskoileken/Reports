@@ -27,7 +27,7 @@ pageextension 50102 "customer list ext" extends "Customer List"
                 var
                     Custjobcue: Codeunit "Cust job cue";
                 begin
-                    Custjobcue.CustRankChange();
+                   // Custjobcue.CustRankChange();
                 end;
             }
         }
