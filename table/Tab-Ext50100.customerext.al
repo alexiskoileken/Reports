@@ -10,5 +10,10 @@ tableextension 50100 "customer ext" extends Customer
             Caption = 'Customer State';
             DataClassification = ToBeClassified;
         }
+        field(50101; Ranks; Enum "Ranking ")
+        {
+            Caption = 'Ranks';
+            Editable = false;
+        }
     }
 }

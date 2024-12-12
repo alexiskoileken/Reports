@@ -12,18 +12,20 @@ codeunit 50107 Base64Import
         SheetName: Text;
         OutStream:OutStream;
         ToFile:Text;
+        TempFile:Text;
+        ExcelCust: Record  "Excel Cust";
     begin
         TempBlob.CreateOutStream(OutStream);
         BaseConvert.FromBase64(Base64String, OutStream);
-
         TempBlob.CreateInStream(InStream);
-
+        
         SheetName := ExcelBuffer.SelectSheetsNameStream(InStream);
-        repeat
-          ExcelBuffer.OpenBookStream(InStream,SheetName);
-          ExcelBuffer.ReadSheet();
+        
+         ExcelBuffer.OpenBookStream(InStream,SheetName);
+         ExcelBuffer.ReadSheet();
           
-        until SheetName = '';
+          
+    
     end;
 }
 

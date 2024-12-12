@@ -21,8 +21,7 @@ codeunit 50106 "Update Customer"
         Customer: Record Customer;
     begin
         Customer.SetCurrentKey(Balance);
-        Customer.Ascending(false);
-        if Customer.FindLast() then
+        if Customer.FindFirst() then
             if Customer."Name 2" = '' then begin
                 Customer."Name 2" := 'Least sales';
                 Customer.Modify(true)
