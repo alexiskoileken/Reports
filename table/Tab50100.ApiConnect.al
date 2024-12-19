@@ -5,6 +5,8 @@ table 50100 ApiConnect
 {
     Caption = 'ApiConnect';
     DataClassification = ToBeClassified;
+    LookupPageId = "Apiconnect list";
+    DrillDownPageId = "Apiconnect list";
 
     fields
     {
@@ -114,19 +116,8 @@ table 50100 ApiConnect
             Clustered = true;
         }
     }
-}
-pagecustomization MyCustomization customizes "Customer Card"
-{
-    layout
+    fieldgroups
     {
-
-        // Add changes to page layout here
+        fieldgroup(DropDown; UserId, Name, UserName) { }
     }
-
-    actions
-    {
-        // Add changes to page actions here
-    }
-
-    //Variables, procedures and triggers are not allowed on Page Customizations
 }

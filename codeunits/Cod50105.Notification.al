@@ -22,6 +22,20 @@ codeunit 50105 "Notification"
         CustLedgerPage.Run();
     end;
 
+    procedure VendorLedgerEntries(VndrLedgerEntryNot: Notification)
+    var
+        VendLedgEntry: Record "Vendor Ledger Entry";
+        GetDataReturnVal: Text;
+        vendorLedgerPage: Page "Vendor Ledger Entries";
+    begin
+        GetDataReturnVal := VndrLedgerEntryNot.GetData('VendNo');
+        VendLedgEntry.SetRange(Open, true);
+        VendLedgEntry.SetFilter("Vendor No.", '%1', GetDataReturnVal);
+        vendorLedgerPage.SetTableView(VendLedgEntry);
+        vendorLedgerPage.Run();
+
+    end;
+
     [IntegrationEvent(false, false)]
     procedure OnPhoneNumberValidate(phone: Code[13])
     begin

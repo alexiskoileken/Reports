@@ -2,7 +2,7 @@ table 50101 Consumer
 {
     Caption = 'Consumer';
     DataClassification = ToBeClassified;
-    
+
     fields
     {
         field(1; No; Code[20])
@@ -12,6 +12,7 @@ table 50101 Consumer
         field(2; name; Text[50])
         {
             Caption = 'name';
+            TableRelation = ApiConnect;
         }
         field(3; surname; Text[50])
         {
