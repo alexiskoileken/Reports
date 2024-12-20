@@ -1,18 +1,18 @@
-page 50107 consumers
+page 50109 "Consumer card"
 {
     ApplicationArea = All;
-    Caption = 'consumers';
-    PageType = List;
+    Caption = 'Consumer card';
+    PageType = Card;
     SourceTable = Consumer;
-    UsageCategory = Lists;
-    CardPageId="Consumer card";
 
     layout
     {
         area(Content)
         {
-            repeater(General)
+            group(General)
             {
+                Caption = 'General';
+
                 field(No; Rec.No)
                 {
                     ToolTip = 'Specifies the value of the No field.', Comment = '%';
@@ -27,6 +27,13 @@ page 50107 consumers
                 }
             }
         }
-       
+        area(FactBoxes)
+        {
+            part(ConsumerPict; "Consumer image part")
+            {
+                SubPageLink = No = field(No);
+                ApplicationArea = Basic, Suite;
+            }
+        }
     }
 }

@@ -12,11 +12,15 @@ table 50101 Consumer
         field(2; name; Text[50])
         {
             Caption = 'name';
-            TableRelation = ApiConnect;
+            //TableRelation = ApiConnect;
         }
         field(3; surname; Text[50])
         {
             Caption = 'surname';
+        }
+        field(4; Images; Media)
+        {
+            DataClassification = ToBeClassified;
         }
     }
     keys

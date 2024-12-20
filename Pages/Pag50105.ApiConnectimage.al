@@ -65,7 +65,6 @@ page 50105 "Api Connect image"
                     FileName: Text;
                     ClientFileName: InStream;
                     OverrideImageQst: Label 'the current picture will be replaced do you want to continue';
-                    TempBlob: Codeunit "Temp Blob";
                 begin
                     rec.TestField(UserId);
                     rec.TestField(Name);
