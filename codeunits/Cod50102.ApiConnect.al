@@ -23,7 +23,7 @@ codeunit 50102 ApiConnect
         if Client.Get('https://jsonplaceholder.typicode.com/users/' + Format(ApiConnect.UserId), response) then
             response.Content().ReadAs(OutPut)
         else
-            Error('No data of such record present');
+            Error('In this Api link no data of the correspond is found');
         APIjsonObj.ReadFrom(OutPut);
         APIjsonObj.Get('name', jsonTkn);
         ApiConnect.Name := jsonTkn.AsValue().AsText();

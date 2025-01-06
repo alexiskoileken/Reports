@@ -44,7 +44,7 @@ codeunit 50105 "Notification"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::Notification, 'OnPhoneNumberValidate', '', false, false)]
     procedure OnCellNumberValidate(phone: Code[13])
     var
-        ErrorMessage: Label 'The phone number is invalid. It must start with a + and contain only numbers.';
+        ErrorMessage: Label 'The phone number entered is invalid.Please enter a valid phone Number?';
     begin
         if not CheckIfPhoneNumberIsValid(phone) then
             Error(ErrorMessage);
@@ -85,7 +85,7 @@ codeunit 50105 "Notification"
         Pattern := '^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
         IsMarch := Regex.IsMatch(Email, Pattern);
         if not IsMarch then
-            Error('Not a valid email adress');
+            Error('Please enter a valid email adress');
 
     end;
 

@@ -65,9 +65,11 @@ codeunit 50106 "Update Customer"
 
         TmpExcelBuf.AddColumn(Customer.FieldCaption("No."), false, '', true, false, false, '', TmpExcelBuf."Cell Type"::Text);
         TmpExcelBuf.AddColumn(Customer.FieldCaption(Name), false, '', true, false, false, '', TmpExcelBuf."Cell Type"::Text);
+        TmpExcelBuf.AddColumn(Customer.FieldCaption("Name 2"), false, '', true, false, false, '', TmpExcelBuf."Cell Type"::Text);
         TmpExcelBuf.AddColumn(Customer.FieldCaption(Contact), false, '', true, false, false, '', TmpExcelBuf."Cell Type"::Text);
         TmpExcelBuf.AddColumn(Customer.FieldCaption(Balance), false, '', true, false, false, '', TmpExcelBuf."Cell Type"::Text);
         TmpExcelBuf.AddColumn(Customer.FieldCaption("Location Code"), false, '', true, false, false, '', TmpExcelBuf."Cell Type"::Text);
+
 
         if Customer.FindSet() then
             repeat
