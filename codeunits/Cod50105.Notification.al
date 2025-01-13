@@ -3,7 +3,6 @@
 /// </summary>
 codeunit 50105 "Notification"
 {
-    //TableNo = "Job Queue Entry";
     trigger OnRun()
     var
     begin

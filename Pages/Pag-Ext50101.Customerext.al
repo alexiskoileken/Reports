@@ -3,6 +3,16 @@
 /// </summary>
 pageextension 50101 "Customer ext" extends "Customer Card"
 {
+    layout
+    {
+        addlast(General)
+        {
+            usercontrol(Picture; EveryDayNewThingDynamic)
+            {
+                ApplicationArea = all;
+            }
+        }
+    }
 
     actions
     {

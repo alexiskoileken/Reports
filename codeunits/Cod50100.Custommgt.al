@@ -3,7 +3,6 @@
 /// </summary>
 codeunit 50100 "Custom mgt " implements IAdressProvider
 {
-
     /// <summary>
     /// GetAdress.
     /// </summary>
